@@ -1,0 +1,144 @@
+{% extends "review/base.html" %}
+
+{% block review_title %}Оставить отзыв{% endblock review_title %}
+{% block review_subtitle %}Поделитесь своим мнением о товаре{% endblock review_subtitle %}
+
+{% block review_content %}
+<div class="review-form">
+    <form method="post">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+            <div class="error-messages">
+                {% for error in form.non_field_errors %}
+                    <span class="error">{{ error }}</span>
+                {% endfor %}
+            </div>
+        {% endif %}
+        
+        <div class="form-group">
+            <label for="{{ form.author_name.id_for_label }}">{{ form.author_name.label }}</label>
+            {{ form.author_name }}
+            {% if form.author_name.errors %}
+                <div class="error-messages">
+                    {% for error in form.author_name.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.author_email.id_for_label }}">{{ form.author_email.label }}</label>
+            {{ form.author_email }}
+            {% if form.author_email.errors %}
+                <div class="error-messages">
+                    {% for error in form.author_email.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.rating.id_for_label }}">{{ form.rating.label }}</label>
+            <div class="rating-input">
+                {% for choice in form.rating %}
+                    <label for="{{ choice.id_for_label }}">
+                        {{ choice.tag }}
+                        {{ choice.choice_label }}
+                    </label>
+                {% endfor %}
+            </div>
+            {% if form.rating.errors %}
+                <div class="error-messages">
+                    {% for error in form.rating.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="form-group">
+            <label for="{{ form.text.id_for_label }}">{{ form.text.label }}</label>
+            {{ form.text }}
+            {% if form.text.errors %}
+                <div class="error-messages">
+                    {% for error in form.text.errors %}
+                        <span class="error">{{ error }}</span>
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+        
+        {{ form.product_id }}
+        
+        <!-- Информация о товаре -->
+        {% if product_id %}
+            <div style="background: #e8f5e8; padding: 10px; margin: 10px 0; border-radius: 5px; font-size: 0.9rem;">
+                <strong>Отзыв о товаре:</strong> ID {{ product_id }}
+            </div>
+        {% else %}
+            <div style="background: #fff3cd; padding: 10px; margin: 10px 0; border-radius: 5px; font-size: 0.9rem;">
+                <strong>Общий отзыв:</strong> Оставьте отзыв о магазине в целом
+            </div>
+        {% endif %}
+        
+        <script>
+            // Устанавливаем значение product_id в скрытое поле
+            document.addEventListener('DOMContentLoaded', function() {
+                const productIdField = document.querySelector('input[name="product_id"]');
+                const productId = '{{ product_id|default:"0" }}';
+                if (productIdField) {
+                    productIdField.value = productId;
+                }
+                
+                // Отладочная информация
+                console.log('Product ID:', productId);
+                console.log('Product ID Field:', productIdField);
+            });
+        </script>
+        
+        <div class="form-actions">
+            <button type="submit" class="btn">Отправить отзыв</button>
+            <a href="{% url 'review:review_list' %}" class="btn btn-secondary">Отмена</a>
+        </div>
+    </form>
+</div>
+
+<style>
+.error-messages {
+    margin-top: 5px;
+}
+
+.error {
+    color: #dc3545;
+    font-size: 0.9rem;
+    display: block;
+}
+
+.form-actions {
+    display: flex;
+    gap: 15px;
+    margin-top: 30px;
+}
+
+.no-reviews {
+    text-align: center;
+    padding: 60px 20px;
+    background: white;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.no-reviews h3 {
+    color: #333;
+    margin-bottom: 15px;
+}
+
+.no-reviews p {
+    color: #666;
+    margin-bottom: 25px;
+}
+</style>
+{% endblock review_content %}

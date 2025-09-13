@@ -1,0 +1,65 @@
+{% extends "review/base.html" %}
+
+{% block review_title %}Отзыв от {{ review.author_name }}{% endblock review_title %}
+{% block review_subtitle %}{{ review.created|date:"d.m.Y в H:i" }}{% endblock review_subtitle %}
+
+{% block review_content %}
+<div class="review-detail">
+    <div class="review-card">
+        <div class="review-header-card">
+            <div>
+                <div class="review-author">{{ review.author_name }}</div>
+                <div class="review-date">{{ review.created|date:"d.m.Y в H:i" }}</div>
+            </div>
+            <div class="review-rating">{{ review.get_rating_display }}</div>
+        </div>
+                <div class="review-text">{{ review.text|linebreaks }}</div>
+                <div class="review-product">
+                    {% if review.product_id and review.product_id != 0 %}
+                        <small>Отзыв о товаре ID: {{ review.product_id }}</small>
+                    {% else %}
+                        <small>Общий отзыв о магазине</small>
+                    {% endif %}
+                </div>
+    </div>
+    
+    <div class="review-actions">
+        <a href="{% url 'review:review_list' %}" class="btn btn-secondary">← Все отзывы</a>
+        <a href="{% url 'review:review_create' %}" class="btn">Оставить свой отзыв</a>
+    </div>
+</div>
+
+<style>
+.review-detail {
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.review-actions {
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-top: 30px;
+}
+
+.review-product {
+    margin-top: 15px;
+    padding-top: 15px;
+    border-top: 1px solid #eee;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+    .review-actions {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .review-actions .btn {
+        width: 100%;
+        max-width: 300px;
+        text-align: center;
+    }
+}
+</style>
+{% endblock review_content %}
