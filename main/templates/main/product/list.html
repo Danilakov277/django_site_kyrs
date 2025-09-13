@@ -1,0 +1,44 @@
+{% extends "main/base.html" %}
+{% block title %}
+    {% if category %}{{ category.name }} - Интернет-магазин{% else %}Все товары - Интернет-магазин{% endif %}
+{% endblock title %}
+
+{% block content %}
+    {% if category %}
+        <div class="category-header">
+            <h1>{{ category.name }}</h1>
+            <p>Товары в категории "{{ category.name }}"</p>
+        </div>
+    {% endif %}
+    
+    <div class="products-section">
+        <h2 class="section-title">
+            {% if category %}{{ category.name }}{% else %}Все товары{% endif %}
+        </h2>
+        {% if products %}
+            <div class="products-grid">
+                {% for product in products %}
+                    <div class="product-card">
+                        {% if product.image %}
+                            <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
+                        {% else %}
+                            <div class="product-image" style="display: flex; align-items: center; justify-content: center; background: #f0f0f0; color: #999;">
+                                📦 Нет изображения
+                            </div>
+                        {% endif %}
+                        <div class="product-info">
+                            <h3 class="product-name">{{ product.name }}</h3>
+                            <div class="product-price">{{ product.price }} ₽</div>
+                            <p class="product-description">{{ product.description|truncatewords:20 }}</p>
+                            <a href="{{ product.get_absolute_url }}" class="product-link">Подробнее</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        {% else %}
+            <div class="no-products">
+                <p>К сожалению, товары пока не добавлены в магазин.</p>
+            </div>
+        {% endif %}
+    </div>
+{% endblock content %}

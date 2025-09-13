@@ -1,0 +1,254 @@
+{% extends "main/base.html" %}
+{% block title %}{{ product.name }} - Интернет-магазин{% endblock title %}
+
+{% block content %}
+<div class="product-detail-container">
+    <div class="product-detail">
+        <div class="product-image-section">
+            {% if product.image %}
+                <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-detail-image">
+            {% else %}
+                <div class="product-detail-image-placeholder">
+                    📦 Нет изображения
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="product-info-section">
+            <h1 class="product-detail-name">{{ product.name }}</h1>
+            <div class="product-detail-price">{{ product.price }} ₽</div>
+            <div class="product-detail-category">
+                <strong>Категория:</strong> 
+                <a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a>
+            </div>
+            <div class="product-detail-description">
+                <h3>Описание:</h3>
+                <p>{{ product.description|linebreaks }}</p>
+            </div>
+            <div class="product-detail-availability">
+                {% if product.available %}
+                    <span class="available">✅ В наличии</span>
+                {% else %}
+                    <span class="unavailable">❌ Нет в наличии</span>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    {% if related_products %}
+        <div class="related-products">
+            <h2>Похожие товары</h2>
+            <div class="related-products-grid">
+                {% for related_product in related_products %}
+                    <div class="related-product-card">
+                        {% if related_product.image %}
+                            <img src="{{ related_product.image.url }}" alt="{{ related_product.name }}" class="related-product-image">
+                        {% else %}
+                            <div class="related-product-image-placeholder">
+                                📦
+                            </div>
+                        {% endif %}
+                        <div class="related-product-info">
+                            <h4 class="related-product-name">{{ related_product.name }}</h4>
+                            <div class="related-product-price">{{ related_product.price }} ₽</div>
+                            <a href="{{ related_product.get_absolute_url }}" class="related-product-link">Подробнее</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+.product-detail-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.product-detail {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 60px;
+    background: white;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.product-image-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.product-detail-image {
+    max-width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 10px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
+
+.product-detail-image-placeholder {
+    width: 100%;
+    height: 400px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 4rem;
+    color: #999;
+    border-radius: 10px;
+}
+
+.product-info-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.product-detail-name {
+    font-size: 2.5rem;
+    color: #333;
+    margin: 0;
+}
+
+.product-detail-price {
+    font-size: 2rem;
+    font-weight: bold;
+    color: #667eea;
+}
+
+.product-detail-category {
+    font-size: 1.1rem;
+    color: #666;
+}
+
+.product-detail-category a {
+    color: #667eea;
+    text-decoration: none;
+}
+
+.product-detail-category a:hover {
+    text-decoration: underline;
+}
+
+.product-detail-description h3 {
+    color: #333;
+    margin-bottom: 10px;
+}
+
+.product-detail-description p {
+    color: #666;
+    line-height: 1.6;
+}
+
+.product-detail-availability {
+    font-size: 1.2rem;
+    font-weight: bold;
+}
+
+.available {
+    color: #28a745;
+}
+
+.unavailable {
+    color: #dc3545;
+}
+
+.related-products {
+    margin-top: 40px;
+}
+
+.related-products h2 {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #333;
+}
+
+.related-products-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
+    gap: 20px;
+}
+
+.related-product-card {
+    background: white;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: transform 0.3s ease;
+}
+
+.related-product-card:hover {
+    transform: translateY(-3px);
+}
+
+.related-product-image {
+    width: 100%;
+    height: 150px;
+    object-fit: cover;
+}
+
+.related-product-image-placeholder {
+    width: 100%;
+    height: 150px;
+    background: #f0f0f0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    color: #999;
+}
+
+.related-product-info {
+    padding: 15px;
+}
+
+.related-product-name {
+    font-size: 1.1rem;
+    margin-bottom: 8px;
+    color: #333;
+}
+
+.related-product-price {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #667eea;
+    margin-bottom: 10px;
+}
+
+.related-product-link {
+    display: inline-block;
+    background: #667eea;
+    color: white;
+    padding: 8px 16px;
+    text-decoration: none;
+    border-radius: 20px;
+    font-size: 0.9rem;
+    transition: background 0.3s ease;
+}
+
+.related-product-link:hover {
+    background: #5a6fd8;
+}
+
+@media (max-width: 768px) {
+    .product-detail {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .product-detail-name {
+        font-size: 2rem;
+    }
+    
+    .product-detail-price {
+        font-size: 1.5rem;
+    }
+}
+</style>
+{% endblock content %}
