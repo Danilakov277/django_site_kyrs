@@ -12,6 +12,7 @@ class CustomUserManager(BaseUserManager):
         user = self.model(email=email,first_name=first_name,last_name=last_name,**extra_fields)
         user.set_password(password)
         user.save(using=self._db)
+        return user
     
 
     def create_superuser(self, email, first_name,last_name,password=None,**extra_fields):
@@ -29,7 +30,7 @@ class CustomUser(AbstractUser):
     first_name=models.CharField(max_length=66)
     last_name = models.CharField(max_length=66)
     is_trener = models.BooleanField(default=False)
-
+    phone = models.CharField(max_length=15,blank=True,null=True)
     username = models.CharField(max_length=150, unique=True,null=True,blank=True)
 
 
@@ -41,3 +42,8 @@ class CustomUser(AbstractUser):
 
     def __str__(self):
         return self.email
+    def clean(self):
+        for field in['phone']:
+            value = getattr(self,field)
+            if value:
+                setattr(self,field,strip_tags(value))
