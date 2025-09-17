@@ -22,8 +22,10 @@ from django.conf.urls.static import static
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('reviews/', include('review.urls', namespace='review')),
+    path('cart/',include('cart.urls',namespace='cart')),
     path('', include('main.urls', namespace='main')),
-    path('user/',include('user.urls',namespace='user'))
+    path('user/',include('user.urls',namespace='user')),
+    
 ]
 
 # Serve media files during development

@@ -20,7 +20,6 @@
                 <div class="error">{{ form.password.errors }}</div>
             {% endif %}
         </div>
-        {% csrf_token %}
         <button type="submit">Log In</button>
         <a href="{% url 'user:register' %}" class="link">Don't have an account? Register</a>
     </form>

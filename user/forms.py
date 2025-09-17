@@ -8,8 +8,8 @@ User = get_user_model()
 class CustomUserCreationForm(UserCreationForm):
     email = forms.EmailField(required=True, max_length=66,
                               widget=forms.EmailInput(attrs={'class': 'input-register form-control','placeholder': 'Your email'}))
-    first_name = forms.CharField(required=True,max_length=50,widget=forms.TextInput(attrs={'class': 'input-register form-control','placeholder': 'Your first name'}))
-    last_name = forms.CharField(required=True,max_length=50,widget=forms.TextInput(attrs={'class': 'input-register form-control','placeholder': 'Your last name'}))
+    first_name = forms.CharField(required=True,max_length=50,widget=forms.TextInput(attrs={'class': 'input-register form-control','placeholder': 'first name'}))
+    last_name = forms.CharField(required=True,max_length=50,widget=forms.TextInput(attrs={'class': 'input-register form-control','placeholder': 'last name'}))
     password1 = forms.CharField(
         required=True,
         max_length=50,
@@ -69,10 +69,10 @@ class CustomUserUpdatedForm(forms.ModelForm):
                             widget=forms.TextInput(attrs={'class': 'input-register form-control','placeholder': 'Your phone number'}))
     first_name = forms.CharField(required=True,
                                  max_length=50,
-                                 widget=forms.TextInput(attrs={'class': 'input-register form-control','placeholder': 'Your first name'}))
+                                 widget=forms.TextInput(attrs={'class': 'input-register form-control','placeholder': 'first name'}))
     last_name = forms.CharField(required=True,
                                  max_length=50,
-                                 widget=forms.TextInput(attrs={'class': 'input-register form-control','placeholder': 'Your last name'}))
+                                 widget=forms.TextInput(attrs={'class': 'input-register form-control','placeholder': 'last name'}))
     email = forms.EmailField(required=False,
                                  widget=forms.EmailInput(attrs={'class': 'input-register form-control','placeholder': 'Your email'}))
     class Meta:
@@ -80,8 +80,8 @@ class CustomUserUpdatedForm(forms.ModelForm):
         fields = ('first_name','last_name','email','phone')
         widgets = {
             'email':forms.EmailInput(attrs={'class': 'input-register form-control','placeholder': 'Your email'}),
-            'first_name':forms.TextInput(attrs={'class': 'input-register form-control','placeholder': 'Your first name'}),
-            'last_name':forms.TextInput(attrs={'class': 'input-register form-control','placeholder': 'Your last name'}),
+            'first_name':forms.TextInput(attrs={'class': 'input-register form-control','placeholder': 'first name'}),
+            'last_name':forms.TextInput(attrs={'class': 'input-register form-control','placeholder': 'last name'}),
             'phone':forms.TextInput(attrs={'class': 'input-register form-control','placeholder': 'Your phone number'}),
             }
     def clean_email(self):

@@ -38,11 +38,13 @@
             </div>
             
             <div class="product-actions">
+                <form action="{% url "cart:cart_add" product.id %}" method="post">
+                {{cart_product_form}}
+                {%csrf_token%}
+                <button type="submit"class = "btn btn-primary btn-lg">добавить в корзину</button>
+                </form>
                 <a href="{% url 'review:review_create_for_product' product.id %}" class="btn btn-review">
                     💬 Оставить отзыв
-                </a>
-                <a href="{% url 'review:review_list' %}" class="btn btn-secondary">
-                    📝 Все отзывы
                 </a>
             </div>
         </div>

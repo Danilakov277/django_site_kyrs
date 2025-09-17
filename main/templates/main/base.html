@@ -255,8 +255,14 @@
                     </a>
                 {% endfor %}
                 <a href="{% url 'review:review_list' %}" class="nav-btn">отзывы</a>
+           
+                {%if request.user.email is not none%}
+                <a href="{% url 'user:profile' %}"class="nav-btn">{{request.user.first_name}}</a>
+                <a href="{% url 'cart:cart_detail' %}"class="nav-btn">корзина</a>
+                {%else%}
                 <a href="{% url 'user:login' %}"class="nav-btn">войти</a>
                 <a href="{% url 'user:register' %}"class="nav-btn">регистрация</a>
+                {%endif%}
             </nav>
         </div>
     </header>

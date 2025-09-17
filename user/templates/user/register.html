@@ -1,32 +1,42 @@
 {% extends 'user/base.html' %}
 
-{% block title %}Create Account{% endblock %}
+{% block title %}Join FitnessHub{% endblock %}
 
 {% block content %}
-    <h1>Create Account</h1>
+    <div class="auth-header">
+        <h1>Start Your Fitness Journey</h1>
+        <p>Create your FitnessHub account</p>
+    </div>
+    
     <form method="post" class="reg-form">
         {% csrf_token %}
-        <div class="form-group">
-            <label for="{{ form.first_name.id_for_label }}">First Name</label>
-            {{ form.first_name }}
-            {% if form.first_name.errors %}
-                <div class="error">{{ form.first_name.errors }}</div>
-            {% endif %}
+        
+        <div class="form-row">
+            <div class="form-group">
+                <label for="{{ form.first_name.id_for_label }}">First Name</label>
+                {{ form.first_name }}
+                {% if form.first_name.errors %}
+                    <div class="error">{{ form.first_name.errors }}</div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.last_name.id_for_label }}">Last Name</label>
+                {{ form.last_name }}
+                {% if form.last_name.errors %}
+                    <div class="error">{{ form.last_name.errors }}</div>
+                {% endif %}
+            </div>
         </div>
+
         <div class="form-group">
-            <label for="{{ form.last_name.id_for_label }}">Last Name</label>
-            {{ form.last_name }}
-            {% if form.last_name.errors %}
-                <div class="error">{{ form.last_name.errors }}</div>
-            {% endif %}
-        </div>
-        <div class="form-group">
-            <label for="{{ form.email.id_for_label }}">Email</label>
+            <label for="{{ form.email.id_for_label }}">Email Address</label>
             {{ form.email }}
             {% if form.email.errors %}
                 <div class="error">{{ form.email.errors }}</div>
             {% endif %}
         </div>
+
         <div class="form-group">
             <label for="{{ form.password1.id_for_label }}">Password</label>
             {{ form.password1 }}
@@ -34,6 +44,7 @@
                 <div class="error">{{ form.password1.errors }}</div>
             {% endif %}
         </div>
+
         <div class="form-group">
             <label for="{{ form.password2.id_for_label }}">Confirm Password</label>
             {{ form.password2 }}
@@ -41,25 +52,20 @@
                 <div class="error">{{ form.password2.errors }}</div>
             {% endif %}
         </div>
+
         <div class="checkbox-form">
             {{ form.is_trener }}
             <label for="{{ form.is_trener.id_for_label }}">
-                I am a trener.
+                I am a fitness trainer
             </label>
-            {% if form.marketing_consent1.errors %}
-                <div class="error">{{ form.marketing_consent1.errors }}</div>
-            {% endif %}
         </div>
-        <div class="checkbox-form">
-            {{ form.marketing_consent2 }}
-            <label for="{{ form.marketing_consent2.id_for_label }}">
-                I agree to receive personalized communications.
-            </label>
-            {% if form.marketing_consent2.errors %}
-                <div class="error">{{ form.marketing_consent2.errors }}</div>
-            {% endif %}
+
+        <button type="submit">Create Account</button>
+        
+        <div class="auth-links">
+            <a href="{% url 'user:login' %}" class="link">
+                Already have an account? Sign in
+            </a>
         </div>
-        <button type="submit">Create</button>
-        <a href="{% url 'user:login' %}" class="link">Already registered? Log in</a>
     </form>
 {% endblock %}
