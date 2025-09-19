@@ -20,7 +20,7 @@
         <div class="product-info-section">
             
             <h1 class="product-detail-name">{{ product.name }}</h1>
-            <div class="product-detail-price">{{ product.price }} ₽</div>
+            <div class="product-detail-price">{{ product.price }} BYN</div>
             <div class="product-detail-category">
                 <strong>Категория:</strong> 
                 <a href="{{ product.category.get_absolute_url }}">{{ product.category.name }}</a>
@@ -65,7 +65,7 @@
                         {% endif %}
                         <div class="related-product-info">
                             <h4 class="related-product-name">{{ related_product.name }}</h4>
-                            <div class="related-product-price">{{ related_product.price }} ₽</div>
+                            <div class="related-product-price">{{ related_product.price }} BYN</div>
                             <a href="{{ related_product.get_absolute_url }}" class="related-product-link">Подробнее</a>
                         </div>
                     </div>
