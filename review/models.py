@@ -1,5 +1,6 @@
 from django.db import models
 from django.urls import reverse
+from django.conf import settings,Settings
 
 class Review(models.Model):
     class Stars(models.IntegerChoices):
@@ -11,6 +12,7 @@ class Review(models.Model):
     
     # Связь с товаром будет добавлена через миграцию
     product_id = models.PositiveIntegerField()
+    user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, null=True, blank=True)
     rating = models.IntegerField(choices=Stars.choices, default=5)
     text = models.TextField(max_length=1000, help_text="Ваш отзыв о товаре")
     author_name = models.CharField(max_length=100, help_text="Ваше имя")

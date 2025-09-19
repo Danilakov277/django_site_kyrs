@@ -16,30 +16,46 @@
             </div>
         {% endif %}
         
-        <div class="form-group">
-            <label for="{{ form.author_name.id_for_label }}">{{ form.author_name.label }}</label>
-            {{ form.author_name }}
-            {% if form.author_name.errors %}
-                <div class="error-messages">
-                    {% for error in form.author_name.errors %}
-                        <span class="error">{{ error }}</span>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
+        <!-- Скрываем поля имени и email для авторизованных -->
+        {% if user.is_authenticated %}
+            <div style="background: #e8f5e8; padding: 15px; margin: 15px 0; border-radius: 5px;">
+                <strong>Вы вошли как:</strong> {{ user.first_name|default:user.email }}
+                <br>
+                <small>Ваши данные будут автоматически подставлены в отзыве</small>
+            </div>
+            
+            <!-- Скрытые поля для автоматического заполнения -->
+            <input type="hidden" name="author_name" value="{{ user.first_name|default:user.email }}">
+            <input type="hidden" name="author_email" value="{{ user.email }}">
+            
+        {% else %}
+            <!-- Для неавторизованных показываем поля -->
+            <div class="form-group">
+                <label for="{{ form.author_name.id_for_label }}">{{ form.author_name.label }}</label>
+                {{ form.author_name }}
+                {% if form.author_name.errors %}
+                    <div class="error-messages">
+                        {% for error in form.author_name.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+            
+            <div class="form-group">
+                <label for="{{ form.author_email.id_for_label }}">{{ form.author_email.label }}</label>
+                {{ form.author_email }}
+                {% if form.author_email.errors %}
+                    <div class="error-messages">
+                        {% for error in form.author_email.errors %}
+                            <span class="error">{{ error }}</span>
+                        {% endfor %}
+                    </div>
+                {% endif %}
+            </div>
+        {% endif %}
         
-        <div class="form-group">
-            <label for="{{ form.author_email.id_for_label }}">{{ form.author_email.label }}</label>
-            {{ form.author_email }}
-            {% if form.author_email.errors %}
-                <div class="error-messages">
-                    {% for error in form.author_email.errors %}
-                        <span class="error">{{ error }}</span>
-                    {% endfor %}
-                </div>
-            {% endif %}
-        </div>
-        
+        <!-- Остальные поля (все видят) -->
         <div class="form-group">
             <label for="{{ form.rating.id_for_label }}">{{ form.rating.label }}</label>
             <div class="rating-input">
@@ -74,7 +90,7 @@
         {{ form.product_id }}
         
         <!-- Информация о товаре -->
-        {% if product_id %}
+        {% if product_id and product_id != "0" %}
             <div style="background: #e8f5e8; padding: 10px; margin: 10px 0; border-radius: 5px; font-size: 0.9rem;">
                 <strong>Отзыв о товаре:</strong> ID {{ product_id }}
             </div>
@@ -85,17 +101,12 @@
         {% endif %}
         
         <script>
-            // Устанавливаем значение product_id в скрытое поле
             document.addEventListener('DOMContentLoaded', function() {
                 const productIdField = document.querySelector('input[name="product_id"]');
                 const productId = '{{ product_id|default:"0" }}';
                 if (productIdField) {
                     productIdField.value = productId;
                 }
-                
-                // Отладочная информация
-                console.log('Product ID:', productId);
-                console.log('Product ID Field:', productIdField);
             });
         </script>
         
