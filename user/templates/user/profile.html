@@ -1,19 +1,28 @@
-{% extends 'user/base.html' %}
+{% extends 'main/base.html' %}
+{% load static %}
 
-{% block title %}Your Profile - FitnessHub{% endblock %}
+{% block title %}Профиль - {{ request.user.first_name }}{% endblock %}
 
 {% block content %}
+<div class="profile-container">
     <div class="profile-header">
-        <h1>Welcome, {{ request.user.first_name }}! 👋</h1>
-        <p>Manage your FitnessHub account</p>
+        <div class="profile-avatar">
+            <div class="avatar-circle">
+                {{ request.user.first_name|first|upper }}{{ request.user.last_name|first|upper }}
+            </div>
+        </div>
+        <div class="profile-info">
+            <h1>Привет, {{ request.user.first_name }}! 👋</h1>
+            <p>Добро пожаловать в ваш профиль</p>
+        </div>
     </div>
     
-    <div class="profile-section">
+    <div class="profile-content">
         <div class="profile-card">
-            <h2>Account Details</h2>
-            <div class="profile-info">
+            <h2>📋 Информация о профиле</h2>
+            <div class="info-grid">
                 <div class="info-item">
-                    <span class="info-label">Name:</span>
+                    <span class="info-label">Имя:</span>
                     <span class="info-value">{{ request.user.first_name }} {{ request.user.last_name }}</span>
                 </div>
                 <div class="info-item">
@@ -21,31 +30,66 @@
                     <span class="info-value">{{ request.user.email }}</span>
                 </div>
                 <div class="info-item">
-                    <span class="info-label">Role:</span>
-                    <span class="info-value">
-                        {% if request.user.is_trener %}
-                            🏋️ Fitness Trainer
-                        {% else %}
-                            💪 Fitness Enthusiast
-                        {% endif %}
-                    </span>
+                    <span class="info-label">Телефон:</span>
+                    <span class="info-value">{{ request.user.phone|default:"Не указан" }}</span>
+                </div>
+                <div class="info-item">
+                    <span class="info-label">Дата регистрации:</span>
+                    <span class="info-value">{{ request.user.date_joined|date:"d.m.Y" }}</span>
                 </div>
             </div>
             
-            <button class="edit-btn" 
-                    hx-get="{% url 'user:edit_account_details' %}" 
-                    hx-target="#account-details-content" 
-                    hx-swap="innerHTML">
-                ✏️ Edit Profile
-            </button>
-            
-            <div id="account-details-content"></div>
+            <a href="{% url 'user:edit_account_details' %}" class="edit-btn">
+                ✏️ Редактировать профиль
+            </a>
+        </div>
+        
+        <div class="profile-card">
+            <h2>🏃‍♂️ Мои услуги</h2>
+            {% if user.booked_services.all %}
+                <div class="services-list">
+                    {% for booking in user.booked_services.all %}
+                        <div class="service-item">
+                            <div class="service-info">
+                                <h4>{{ booking.service.name }}</h4>
+                                <p><strong>Тренер:</strong> {{ booking.service.trainer_name }}</p>
+                                <p><strong>Время:</strong> {{ booking.service.event_time|date:"d.m.Y в H:i" }}</p>
+                                <p><strong>Статус:</strong> 
+                                    {% if booking.is_confirmed %}
+                                        <span class="status confirmed">✅ Подтверждено</span>
+                                    {% else %}
+                                        <span class="status pending">⏳ Ожидает подтверждения</span>
+                                    {% endif %}
+                                </p>
+                            </div>
+                            <div class="service-price">
+                                {{ booking.service.price }} BYN
+                            </div>
+                        </div>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <div class="no-services">
+                    <p>Вы еще не записались ни на одну услугу</p>
+                    <a href="{% url 'main:service_list' %}" class="btn-primary">Посмотреть услуги</a>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="profile-card">
+            <h2>🛒 Мои заказы</h2>
+            <div class="orders-info">
+                <p>Здесь будут отображаться ваши заказы товаров</p>
+                <a href="{% url 'cart:cart_detail' %}" class="btn-primary">Перейти в корзину</a>
+            </div>
         </div>
     </div>
     
     <div class="profile-actions">
         <a href="{% url 'user:logout' %}" class="logout-btn">
-            🚪 Sign Out
+            🚪 Выйти из аккаунта
         </a>
     </div>
+</div>
+
 {% endblock %}

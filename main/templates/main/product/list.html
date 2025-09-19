@@ -22,15 +22,24 @@
                         {% if product.image %}
                             <img src="{{ product.image.url }}" alt="{{ product.name }}" class="product-image">
                         {% else %}
-                            <div class="product-image" style="display: flex; align-items: center; justify-content: center; background: #f0f0f0; color: #999;">
-                                📦 Нет изображения
+                            <div class="product-image" style="display: flex; align-items: center; justify-content: center; background: linear-gradient(45deg, #667eea, #764ba2); color: white; font-size: 3rem;">
+                                📦
                             </div>
                         {% endif %}
                         <div class="product-info">
                             <h3 class="product-name">{{ product.name }}</h3>
-                            <div class="product-price">{{ product.price }} ₽</div>
+                            <div class="product-price">{{ product.price }} BYN</div>
                             <p class="product-description">{{ product.description|truncatewords:20 }}</p>
-                            <a href="{{ product.get_absolute_url }}" class="product-link">Подробнее</a>
+                            <div class="product-actions">
+                                <a href="{{ product.get_absolute_url }}" class="product-link">Подробнее</a>
+                                {% if user.is_authenticated %}
+                                    <form method="post" action="{% url 'cart:cart_add' product.id %}" class="cart-form">
+                                        {% csrf_token %}
+                                        <input type="hidden" name="quantity" value="1">
+                                        <button type="submit" class="add-to-cart-btn">В корзину</button>
+                                    </form>
+                                {% endif %}
+                            </div>
                         </div>
                     </div>
                 {% endfor %}

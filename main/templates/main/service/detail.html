@@ -1,0 +1,228 @@
+{% extends 'main/base.html' %}
+{% load static %}
+
+{% block title %}{{ service.name }}{% endblock title %}
+
+{% block content %}
+<div class="service-detail">
+    <div class="service-main">
+        <div class="service-image">
+            {% if service.image %}
+                <img src="{{ service.image.url }}" alt="{{ service.name }}" class="main-image">
+            {% else %}
+                <div class="main-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-size: 8rem;">
+                    🏃‍♂️
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="service-info">
+            <h1 class="service-title">{{ service.name }}</h1>
+            
+            <div class="service-details">
+                <div class="detail-item">
+                    <strong>Тренер:</strong> {{ service.trainer_name }}
+                    {% if service.trainer_photo %}
+                        <img src="{{ service.trainer_photo.url }}" alt="{{ service.trainer_name }}" class="trainer-photo">
+                    {% endif %}
+                </div>
+                
+                <div class="detail-item">
+                    <strong>Время мероприятия:</strong> {{ service.event_time|date:"d.m.Y в H:i" }}
+                </div>
+                
+                <div class="detail-item price">
+                                <strong>Стоимость:</strong> <span class="price-value">{{ service.price }} BYN</span>
+                </div>
+            </div>
+            
+            {% if service.description %}
+                <div class="service-description">
+                    <h3>Описание</h3>
+                    <p>{{ service.description|linebreaks }}</p>
+                </div>
+            {% endif %}
+            
+            {% if user.is_authenticated %}
+                <form method="post" action="{% url 'main:book_service' service.id %}" class="booking-form">
+                    {% csrf_token %}
+                    <button type="submit" class="book-btn">Записаться на услугу</button>
+                </form>
+            {% else %}
+                <div class="login-required">
+                    <p>Для записи на услугу необходимо <a href="{% url 'user:login' %}">войти в систему</a></p>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    {% if related_services %}
+        <div class="related-services">
+            <h2>Другие услуги</h2>
+            <div class="products-grid">
+                {% for related_service in related_services %}
+                    <div class="product-card">
+                        {% if related_service.image %}
+                            <img src="{{ related_service.image.url }}" alt="{{ related_service.name }}" class="product-image">
+                        {% else %}
+                            <div class="product-image" style="background: linear-gradient(45deg, #667eea, #764ba2); display: flex; align-items: center; justify-content: center; color: white; font-size: 3rem;">
+                                🏃‍♂️
+                            </div>
+                        {% endif %}
+                        
+                        <div class="product-info">
+                            <h3 class="product-name">{{ related_service.name }}</h3>
+                            <div class="service-trainer">
+                                <strong>Тренер:</strong> {{ related_service.trainer_name }}
+                            </div>
+                            <div class="service-time">
+                                <strong>Время:</strong> {{ related_service.event_time|date:"d.m.Y H:i" }}
+                            </div>
+                                        <div class="product-price">{{ related_service.price }} BYN</div>
+                            
+                            <a href="{{ related_service.get_absolute_url }}" class="product-link">Подробнее</a>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    {% endif %}
+</div>
+
+<style>
+.service-detail {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.service-main {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 60px;
+    background: var(--bg-primary);
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px var(--shadow);
+    border: 1px solid var(--border-color);
+}
+
+.service-image {
+    width: 100%;
+}
+
+.main-image {
+    width: 100%;
+    height: 400px;
+    object-fit: cover;
+    border-radius: 15px;
+}
+
+.service-title {
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: var(--text-primary);
+    font-weight: 700;
+}
+
+.service-details {
+    margin-bottom: 30px;
+}
+
+.detail-item {
+    margin-bottom: 15px;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--text-primary);
+}
+
+.trainer-photo {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-left: 10px;
+}
+
+.price {
+    font-size: 1.3rem;
+}
+
+.price-value {
+    color: var(--accent-color);
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.service-description {
+    margin-bottom: 30px;
+}
+
+.service-description h3 {
+    margin-bottom: 15px;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+.booking-form {
+    margin-top: 30px;
+}
+
+.book-btn {
+    background: var(--gradient-primary);
+    color: white;
+    padding: 15px 30px;
+    border: none;
+    border-radius: 25px;
+    font-size: 1.1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+
+.book-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+}
+
+.login-required {
+    margin-top: 30px;
+    padding: 20px;
+    background: var(--bg-secondary);
+    border-radius: 10px;
+    text-align: center;
+    border: 1px solid var(--border-color);
+    color: var(--text-secondary);
+}
+
+.related-services {
+    margin-top: 60px;
+}
+
+.related-services h2 {
+    text-align: center;
+    margin-bottom: 40px;
+    color: var(--text-primary);
+    font-weight: 600;
+}
+
+@media (max-width: 768px) {
+    .service-main {
+        grid-template-columns: 1fr;
+        gap: 20px;
+    }
+    
+    .service-title {
+        font-size: 2rem;
+    }
+    
+    .main-image {
+        height: 250px;
+    }
+}
+</style>
+{% endblock content %}

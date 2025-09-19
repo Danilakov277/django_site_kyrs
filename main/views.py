@@ -1,5 +1,7 @@
-from django.shortcuts import render, get_object_or_404
-from .models import Category, Product
+from django.shortcuts import render, get_object_or_404, redirect
+from django.contrib.auth.decorators import login_required
+from django.contrib import messages
+from .models import Category, Product, Service, UserService
 from cart.forms import CartAddProductForm
 
 def product_list(request,category_slug=None):
@@ -21,3 +23,36 @@ def product_detail(request, id, slug):
                                               available = True).exclude(id=product.id)[:4]
     cart_product_form = CartAddProductForm()
     return render(request,'main/product/detail.html',{'product':product,'related_products':related_products,'cart_product_form':cart_product_form})
+
+def service_list(request):
+    services = Service.objects.filter(available=True).order_by('event_time')
+    return render(request, 'main/service/list.html', {'services': services})
+
+def service_detail(request, id, slug):
+    service = get_object_or_404(Service, id=id, slug=slug, available=True)
+    related_services = Service.objects.filter(available=True).exclude(id=service.id)[:4]
+    return render(request, 'main/service/detail.html', {
+        'service': service, 
+        'related_services': related_services
+    })
+
+@login_required
+def book_service(request, service_id):
+    service = get_object_or_404(Service, id=service_id, available=True)
+    
+    if request.method == 'POST':
+        # Проверяем, не записан ли уже пользователь на эту услугу
+        booking, created = UserService.objects.get_or_create(
+            user=request.user,
+            service=service,
+            defaults={'is_confirmed': False}
+        )
+        
+        if created:
+            messages.success(request, f'Вы успешно записались на услугу "{service.name}"!')
+        else:
+            messages.info(request, f'Вы уже записаны на услугу "{service.name}".')
+        
+        return redirect('main:service_detail', id=service.id, slug=service.slug)
+    
+    return render(request, 'main/service/book.html', {'service': service})
