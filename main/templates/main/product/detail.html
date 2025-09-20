@@ -38,11 +38,17 @@
             </div>
             
             <div class="product-actions">
+                {%if user.is_authenticated%}
                 <form action="{% url "cart:cart_add" product.id %}" method="post">
                 {{cart_product_form}}
                 {%csrf_token%}
                 <button type="submit"class = "btn btn-primary btn-lg">добавить в корзину</button>
                 </form>
+                {%else%}
+                <a href="{% url 'user:login' %}"class = "btn btn-primary btn-lg">
+                    Для покупки необходимо авторезироваться 
+                </a>
+                {%endif%}
                 <a href="{% url 'review:review_create_for_product' product.id %}" class="btn btn-review">
                     💬 Оставить отзыв
                 </a>

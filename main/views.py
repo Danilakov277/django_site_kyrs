@@ -3,6 +3,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib import messages
 from .models import Category, Product, Service, UserService
 from cart.forms import CartAddProductForm
+from django.urls import reverse
 
 def product_list(request,category_slug=None):
     categories = Category.objects.all()
@@ -53,6 +54,7 @@ def book_service(request, service_id):
         else:
             messages.info(request, f'Вы уже записаны на услугу "{service.name}".')
         
+        # УБРАТЬ ЯКОРЬ #booking, так как вкладок нет
         return redirect('main:service_detail', id=service.id, slug=service.slug)
     
     return render(request, 'main/service/book.html', {'service': service})

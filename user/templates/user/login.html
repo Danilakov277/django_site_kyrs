@@ -3,6 +3,7 @@
 {% block title %}Log In{% endblock %}
 
 {% block content %}
+<div class="auth-container">
     <h1>Log In</h1>
     <form method="post" class="reg-form">
         {% csrf_token %}
@@ -21,6 +22,10 @@
             {% endif %}
         </div>
         <button type="submit">Log In</button>
-        <a href="{% url 'user:register' %}" class="link">Don't have an account? Register</a>
+        <div class="auth-links">
+            <a href="{% url 'user:password_reset' %}" class="link">Забыли пароль?</a>
+            <a href="{% url 'user:register' %}" class="link">Don't have an account? Register</a>
+        </div>
     </form>
+</div>
 {% endblock %}

@@ -144,6 +144,7 @@ body {
     margin: 0;
 }
 
+
 /* Buttons */
 button[type="submit"] {
     background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
@@ -405,3 +406,4 @@ h2 {
     box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
     transform: translateY(-1px);
 }
+

@@ -20,7 +20,6 @@
                 <a href="{% url 'main:product_list' %}" class="nav-btn">Товары</a>
                 <a href="{% url 'main:service_list' %}" class="nav-btn">Услуги</a>
                 <a href="{% url 'review:review_list' %}" class="nav-btn">Отзывы</a>
-                <a href="{% url 'articles:articles_list' %}" class="nav-btn">Статьи</a>
            
                 {%if request.user.email is not none%}
                 <a href="{% url 'user:profile' %}" class="nav-btn">Профиль</a>
@@ -42,7 +41,6 @@
                     <a href="{% url 'main:product_list' %}" class="nav-btn">🛍️ Товары</a>
                     <a href="{% url 'main:service_list' %}" class="nav-btn">🏃‍♂️ Услуги</a>
                     <a href="{% url 'review:review_list' %}" class="nav-btn">💬 Отзывы</a>
-                    <a href="{% url 'articles:articles_list' %}" class="nav-btn">📃 Статьи</a>
                
                     {%if request.user.email is not none%}
                     <a href="{% url 'user:profile' %}" class="nav-btn">👤 Профиль</a>

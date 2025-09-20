@@ -3,6 +3,10 @@ from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 from django.contrib.auth import get_user_model, authenticate
 from django.utils.html import strip_tags
 from django.core.validators import RegexValidator
+from .models import  CustomUser, ProgressCategory, UserProgress, ProgressUpdate
+from django.contrib.auth.forms import PasswordResetForm, SetPasswordForm
+
+
 
 User = get_user_model()
 class CustomUserCreationForm(UserCreationForm):
@@ -97,3 +101,104 @@ class CustomUserUpdatedForm(forms.ModelForm):
                 if cleaned_data.get(field):
                     cleaned_data[field] = strip_tags(cleaned_data[field])
             return cleaned_data 
+
+
+
+class UserProgressForm(forms.ModelForm):
+    class Meta:
+        model = UserProgress
+        fields = ['category', 'title', 'description', 'target_value', 'unit', 'priority', 'end_date']
+        widgets = {
+            'category': forms.Select(attrs={
+                'class': 'form-select',
+                'placeholder': 'Выберите категорию'
+            }),
+            'title': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Название цели (например: "Пробежать 5 км")'
+            }),
+            'description': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 3,
+                'placeholder': 'Описание цели (необязательно)'
+            }),
+            'target_value': forms.NumberInput(attrs={
+                'class': 'form-control',
+                'step': '0.1',
+                'placeholder': 'Целевое значение'
+            }),
+            'unit': forms.TextInput(attrs={
+                'class': 'form-control',
+                'placeholder': 'Единица измерения (км, раз, кг, и т.д.)'
+            }),
+            'priority': forms.Select(attrs={
+                'class': 'form-select'
+            }),
+            'end_date': forms.DateInput(attrs={
+                'class': 'form-control',
+                'type': 'date'
+            }),
+        }
+        labels = {
+            'category': 'Категория',
+            'title': 'Название цели',
+            'description': 'Описание',
+            'target_value': 'Целевое значение',
+            'unit': 'Единица измерения',
+            'priority': 'Приоритет',
+            'end_date': 'Дата завершения',
+        }
+
+
+class ProgressUpdateForm(forms.ModelForm):
+    value_added = forms.DecimalField(
+        max_digits=10,
+        decimal_places=2,
+        widget=forms.NumberInput(attrs={
+            'class': 'form-control',
+            'step': '0.1',
+            'min': '0.1',
+            'placeholder': '0.0'
+        }),
+        label='Добавить значение'
+    )
+    
+    class Meta:
+        model = ProgressUpdate
+        fields = ['value_added', 'notes']
+        widgets = {
+            'notes': forms.Textarea(attrs={
+                'class': 'form-control',
+                'rows': 2,
+                'placeholder': 'Заметки о прогрессе...'
+            }),
+        }
+        labels = {
+            'notes': 'Заметки',
+        }
+
+
+
+class CustomPasswordResetForm(PasswordResetForm):
+    email = forms.EmailField(
+        widget=forms.EmailInput(attrs={
+            'class': 'input-register form-control',
+            'placeholder': 'Ваш email'
+        })
+    )
+
+class CustomSetPasswordForm(SetPasswordForm):
+    new_password1 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'input-register form-control',
+            'placeholder': 'Новый пароль'
+        }),
+        strip=False
+    )
+    new_password2 = forms.CharField(
+        widget=forms.PasswordInput(attrs={
+            'class': 'input-register form-control',
+            'placeholder': 'Подтвердите новый пароль'
+        }),
+        strip=False
+    )

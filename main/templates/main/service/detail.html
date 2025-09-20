@@ -55,7 +55,214 @@
             {% endif %}
         </div>
     </div>
-    
+{% if messages %}
+    <div class="messages-container" style="position: fixed; top: 80px; right: 20px; z-index: 1060; max-width: 400px;">
+        {% for message in messages %}
+            <div class="message-alert alert-{{ message.tags }} animate__animated animate__fadeInRight animate__faster" role="alert">
+                <div class="message-content">
+                    <div class="message-icon">
+                        {% if message.tags == 'success' %}✅
+                        {% elif message.tags == 'error' or message.tags == 'danger' %}❌
+                        {% elif message.tags == 'warning' %}⚠️
+                        {% elif message.tags == 'info' %}ℹ️
+                        {% else %}💬{% endif %}
+                    </div>
+                    <div class="message-text">
+                        <div class="message-title">
+                            {% if message.tags == 'success' %}Успех!
+                            {% elif message.tags == 'error' or message.tags == 'danger' %}Ошибка
+                            {% elif message.tags == 'warning' %}Внимание
+                            {% elif message.tags == 'info' %}Информация
+                            {% else %}Сообщение{% endif %}
+                        </div>
+                        <div class="message-body">{{ message }}</div>
+                    </div>
+                    <button type="button" class="message-close" onclick="this.parentElement.parentElement.classList.add('animate__fadeOutRight')">
+                        &times;
+                    </button>
+                </div>
+                <div class="message-progress"></div>
+            </div>
+        {% endfor %}
+    </div>
+
+    <style>
+    .message-alert {
+        border: none;
+        border-radius: 15px;
+        padding: 0;
+        margin-bottom: 15px;
+        box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+        overflow: hidden;
+        position: relative;
+        backdrop-filter: blur(10px);
+        border: 1px solid rgba(255, 255, 255, 0.2);
+    }
+
+    .alert-success {
+        background: linear-gradient(135deg, var(--success-color) 0%, #2ecc71 100%);
+        color: white;
+    }
+
+    .alert-error, .alert-danger {
+        background: linear-gradient(135deg, var(--danger-color) 0%, #e74c3c 100%);
+        color: white;
+    }
+
+    .alert-warning {
+        background: linear-gradient(135deg, var(--warning-color) 0%, #f39c12 100%);
+        color: white;
+    }
+
+    .alert-info {
+        background: linear-gradient(135deg, var(--info-color) 0%, #3498db 100%);
+        color: white;
+    }
+
+    .message-content {
+        display: flex;
+        align-items: center;
+        padding: 18px 20px;
+        position: relative;
+    }
+
+    .message-icon {
+        font-size: 1.8rem;
+        margin-right: 15px;
+        flex-shrink: 0;
+        filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
+    }
+
+    .message-text {
+        flex: 1;
+    }
+
+    .message-title {
+        font-weight: 700;
+        font-size: 1.1rem;
+        margin-bottom: 5px;
+        text-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+    }
+
+    .message-body {
+        font-size: 0.95rem;
+        opacity: 0.95;
+        line-height: 1.4;
+    }
+
+    .message-close {
+        background: rgba(255, 255, 255, 0.3);
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+        padding: 5px;
+        border-radius: 50%;
+        margin-left: 10px;
+        opacity: 0.8;
+        transition: all 0.3s ease;
+        line-height: 1;
+        width: 30px;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: inherit;
+    }
+
+    .message-close:hover {
+        opacity: 1;
+        background: rgba(255, 255, 255, 0.4);
+        transform: scale(1.1);
+    }
+
+    .message-progress {
+        height: 4px;
+        background: rgba(255, 255, 255, 0.5);
+        animation: progressBar 5s linear forwards;
+    }
+
+    @keyframes progressBar {
+        0% { width: 100%; }
+        100% { width: 0%; }
+    }
+
+    /* Анимации */
+    .animate__animated {
+        animation-duration: 0.5s;
+    }
+
+    .animate__faster {
+        animation-duration: 0.3s;
+    }
+
+    /* Адаптивность */
+    @media (max-width: 768px) {
+        .messages-container {
+            left: 20px;
+            right: 20px;
+            max-width: none;
+            top: 70px;
+        }
+        
+        .message-alert {
+            margin-bottom: 10px;
+        }
+        
+        .message-content {
+            padding: 15px;
+        }
+        
+        .message-icon {
+            font-size: 1.5rem;
+            margin-right: 12px;
+        }
+        
+        .message-title {
+            font-size: 1rem;
+        }
+        
+        .message-body {
+            font-size: 0.85rem;
+        }
+        
+        .message-close {
+            width: 25px;
+            height: 25px;
+            font-size: 1.2rem;
+        }
+    }
+    </style>
+
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Автоматическое скрытие сообщений через 5 секунд
+        const messages = document.querySelectorAll('.message-alert');
+        messages.forEach(message => {
+            setTimeout(() => {
+                message.classList.add('animate__fadeOutRight');
+                setTimeout(() => {
+                    if (message.parentNode) {
+                        message.parentNode.removeChild(message);
+                    }
+                }, 300);
+            }, 5000);
+        });
+
+        // Обработка клика по кнопке закрытия
+        document.querySelectorAll('.message-close').forEach(button => {
+            button.addEventListener('click', function() {
+                const message = this.closest('.message-alert');
+                message.classList.add('animate__fadeOutRight');
+                setTimeout(() => {
+                    if (message.parentNode) {
+                        message.parentNode.removeChild(message);
+                    }
+                }, 300);
+            });
+        });
+    });
+    </script>
+{% endif %}
     {% if related_services %}
         <div class="related-services">
             <h2>Другие услуги</h2>
