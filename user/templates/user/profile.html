@@ -580,9 +580,17 @@ textarea.form-control {
                 </div>
             </div>
             
-            <a href="{% url 'user:edit_account_details' %}" class="edit-btn">
+        <button hx-get="{% url 'user:edit_account_details' %}" 
+                hx-target="#account-details-content" 
+                hx-swap="innerHTML" 
+                class="edit-btn"
+                >
+                        
                 ✏️ Редактировать профиль
-            </a>
+         
+
+        </button>
+        <div id="account-details-content"></div>
         </div>
         
         <div class="profile-card">

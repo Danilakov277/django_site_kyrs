@@ -15,11 +15,12 @@
             {% endif %}
         {% endfor %}
         <div class="button-container">
-            <button type="submit">Update</button>
+            <button type="submit" class="edit-btn">Update</button>
             <button hx-get="{% url 'user:account_details' %}" 
                     hx-target="#account-details-content" 
                     hx-swap="innerHTML" 
-                    type="button">Cancel</button>
+                    type="button"
+                    class="edit-btn">Cancel</button>
         </div>
     </form>
 </div>
