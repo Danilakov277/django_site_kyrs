@@ -757,6 +757,7 @@ body {
 
 .review-header {
     display: flex;
+    background: var(--bg-primary);
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
@@ -883,7 +884,16 @@ body {
     gap: 20px;
     transition: all 0.3s ease;
 }
-
+.product-detail {
+    display: grid;
+    background: var(--bg-primary);
+    grid-template-columns: 1fr 1fr;
+    gap: 40px;
+    margin-bottom: 60px;
+    padding: 30px;
+    border-radius: 15px;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+}
 .cart-item:hover {
     transform: translateY(-2px);
     box-shadow: 0 8px 30px var(--shadow-hover);
@@ -1207,3 +1217,193 @@ body {
     background: var(--text-secondary);
 }
 
+
+/* Стили для формы прогресса */
+.progress-form {
+    margin-top: 1rem;
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+}
+
+.form-group {
+    margin-bottom: 1rem;
+}
+
+.form-group.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-weight: 500;
+    color: #2c3e50;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.form-group label .icon {
+    font-size: 1.1em;
+}
+
+.form-control,
+.form-select {
+    width: 100%;
+    padding: 0.75rem;
+    border: 2px solid #e9ecef;
+    border-radius: 8px;
+    font-size: 1rem;
+    transition: all 0.3s ease;
+    background: white;
+}
+
+.form-control:focus,
+.form-select:focus {
+    outline: none;
+    border-color: #4a6cf7;
+    box-shadow: 0 0 0 3px rgba(74, 108, 247, 0.1);
+}
+
+.form-control::placeholder {
+    color: #6c757d;
+    opacity: 0.7;
+}
+
+textarea.form-control {
+    resize: vertical;
+    min-height: 80px;
+}
+
+.btn-large {
+    padding: 1rem 2rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+}
+
+/* Стили для элементов прогресса */
+.update-form {
+    display: flex;
+    gap: 0.5rem;
+    align-items: flex-end;
+}
+
+.update-form .form-group {
+    margin-bottom: 0;
+}
+
+.update-form label {
+    font-size: 0.8rem;
+    margin-bottom: 0.25rem;
+}
+
+.update-form input {
+    width: 80px;
+}
+
+.progress-actions {
+    display: flex;
+    gap: 0.5rem;
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px solid #e9ecef;
+    flex-wrap: wrap;
+}
+
+.progress-actions form {
+    display: flex;
+}
+
+.progress-actions button {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.btn-small {
+    background: #4a6cf7;
+    color: white;
+    min-width: 40px;
+    height: 40px;
+}
+
+.btn-small:hover {
+    background: #3b5bdb;
+    transform: translateY(-2px);
+}
+
+.btn-success {
+    background: #28a745;
+    color: white;
+    min-width: 40px;
+    height: 40px;
+}
+
+.btn-success:hover {
+    background: #218838;
+    transform: translateY(-2px);
+}
+
+.btn-danger {
+    background: #dc3545;
+    color: white;
+    min-width: 40px;
+    height: 40px;
+}
+
+.btn-danger:hover {
+    background: #c82333;
+    transform: translateY(-2px);
+}
+
+/* Адаптивность */
+@media (max-width: 768px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+    
+    .progress-actions {
+        flex-direction: column;
+        align-items: stretch;
+    }
+    
+    .update-form {
+        justify-content: space-between;
+    }
+    
+    .update-form .form-group {
+        flex: 1;
+    }
+}
+
+/* Анимации */
+.form-control,
+.form-select {
+    transition: all 0.3s ease;
+}
+
+.form-control:hover,
+.form-select:hover {
+    border-color: #adb5bd;
+}
+
+/* Стили для выбранных элементов */
+.form-select {
+    background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' fill='none' viewBox='0 0 20 20'%3e%3cpath stroke='%236b7280' stroke-linecap='round' stroke-linejoin='round' stroke-width='1.5' d='m6 8 4 4 4-4'/%3e%3c/svg%3e");
+    background-position: right 0.5rem center;
+    background-repeat: no-repeat;
+    background-size: 1.5em 1.5em;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    appearance: none;
+}

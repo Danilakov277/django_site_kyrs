@@ -757,6 +757,7 @@ body {
 
 .review-header {
     display: flex;
+    background: var(--bg-primary);
     justify-content: space-between;
     align-items: center;
     margin-bottom: 15px;
