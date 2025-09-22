@@ -13,19 +13,23 @@
 
     <header class="header">
         <div class="nav-container">
-            <a href="{% url 'main:product_list' %}" class="logo">🛍️ Магазин</a>
+            <a href="{% url 'main:service_list' %}" class="logo">🛍️ Магазин</a>
             <button class="menu-toggle" onclick="toggleMenu()">☰</button>
             
             <!-- Desktop navigation -->
             <nav class="nav-buttons desktop-nav">
+                {%if product_list%}
                 <a href="{% url 'main:product_list' %}" class="nav-btn">Товары</a>
+                {%endif%}
                 <a href="{% url 'main:service_list' %}" class="nav-btn">Услуги</a>
                 <a href="{% url 'review:review_list' %}" class="nav-btn">Отзывы</a>
                 <a href="{% url 'articles:articles_list' %}" class="nav-btn">Статьи</a>
            
                 {%if request.user.email is not none%}
                 <a href="{% url 'user:profile' %}" class="nav-btn">Профиль</a>
+                 {%if product_list%}
                 <a href="{% url 'cart:cart_detail' %}" class="nav-btn">Корзина</a>
+                {%endif%}
                 {%else%}
                 <a href="{% url 'user:login' %}" class="nav-btn">Войти</a>
                 <a href="{% url 'user:register' %}" class="nav-btn">Регистрация</a>
@@ -40,14 +44,19 @@
                     <button class="close-sidebar" onclick="toggleMenu()">✕</button>
                 </div>
                 <div class="sidebar-content">
+                    {%if product_list%}
                     <a href="{% url 'main:product_list' %}" class="nav-btn">🛍️ Товары</a>
+                    {%endif%}
                     <a href="{% url 'main:service_list' %}" class="nav-btn">🏃‍♂️ Услуги</a>
                     <a href="{% url 'review:review_list' %}" class="nav-btn">💬 Отзывы</a>
                     <a href="{% url 'articles:articles_list' %}" class="nav-btn">📃 Статьи</a>
                
                     {%if request.user.email is not none%}
+                    
                     <a href="{% url 'user:profile' %}" class="nav-btn">👤 Профиль</a>
+                    {%if product_list%}
                     <a href="{% url 'cart:cart_detail' %}" class="nav-btn">🛒 Корзина</a>
+                    {%endif%}
                     {%else%}
                     <a href="{% url 'user:login' %}" class="nav-btn">🔑 Войти</a>
                     <a href="{% url 'user:register' %}" class="nav-btn">📝 Регистрация</a>

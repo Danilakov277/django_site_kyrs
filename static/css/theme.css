@@ -1610,6 +1610,7 @@ body {
 
 .form-group {
     margin-bottom: 1rem;
+    color: var(--text-primary);
 }
 
 .form-group.full-width {
