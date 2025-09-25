@@ -131,20 +131,20 @@ dmypy.json
 # Django specific
 media/
 staticfiles/
-*.sqlite3
-*.db
+static_root/
+
+# PostgreSQL data
+postgres_data/
 
 # IDE
 .vscode/
 .idea/
 *.swp
 *.swo
-*~
 
 # OS
 .DS_Store
 Thumbs.db
 
-# Project specific
-check_db.py
-setup_db.py
+# Logs
+*.log
