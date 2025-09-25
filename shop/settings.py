@@ -29,7 +29,7 @@ SECRET_KEY = os.getenv('SECRET_KEY')
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['localhost', '127.0.0.1']
 
 
 
@@ -87,8 +87,12 @@ WSGI_APPLICATION = 'shop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'django_site_kyrs',
+        'USER': 'anzherus',
+        'PASSWORD': '1029384756SetKvazar',
+        'HOST': 'localhost',
+        'PORT': '5433',
     }
 }
 
