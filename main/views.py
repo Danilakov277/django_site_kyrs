@@ -16,25 +16,38 @@ def product_list(request,category_slug=None):
     return render(request, 'main/product/list.html',
                   {'category':category,
                    'categories' : categories,
-                   'products':products})
+                   'products':products,
+                   'product_list':products})  # Добавляем product_list для отображения вкладки
 
 def product_detail(request, id, slug):
     product = get_object_or_404(Product,id=id,slug=slug,available=True)
     related_products = Product.objects.filter(category = product.category,
                                               available = True).exclude(id=product.id)[:4]
     cart_product_form = CartAddProductForm()
-    return render(request,'main/product/detail.html',{'product':product,'related_products':related_products,'cart_product_form':cart_product_form})
+    products = Product.objects.filter(available=True)  # Добавляем товары для отображения вкладки
+    return render(request,'main/product/detail.html',{
+        'product':product,
+        'related_products':related_products,
+        'cart_product_form':cart_product_form,
+        'product_list':products  # Добавляем product_list для отображения вкладки
+    })
 
 def service_list(request):
     services = Service.objects.filter(available=True).order_by('event_time')
-    return render(request, 'main/service/list.html', {'services': services})
+    products = Product.objects.filter(available=True)  # Добавляем товары для отображения вкладки
+    return render(request, 'main/service/list.html', {
+        'services': services,
+        'product_list': products  # Добавляем product_list для отображения вкладки
+    })
 
 def service_detail(request, id, slug):
     service = get_object_or_404(Service, id=id, slug=slug, available=True)
     related_services = Service.objects.filter(available=True).exclude(id=service.id)[:4]
+    products = Product.objects.filter(available=True)  # Добавляем товары для отображения вкладки
     return render(request, 'main/service/detail.html', {
         'service': service, 
-        'related_services': related_services
+        'related_services': related_services,
+        'product_list': products  # Добавляем product_list для отображения вкладки
     })
 
 @login_required
