@@ -125,7 +125,7 @@ DB_PASSWORD=mypassword
 #### 1. Клонирование и настройка
 ```powershell
 # Перейдите в директорию проекта
-cd C:\Users\Anzherus\Desktop\django_site_kyrs
+cd ...\django_site_kyrs
 
 # Активируйте виртуальное окружение
 .\venv\Scripts\Activate.ps1
