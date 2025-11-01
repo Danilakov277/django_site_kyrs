@@ -1,7 +1,7 @@
 # Docker
 .env
 .dockerignore
-.env.productiongit push origin main
+.env.production
 
 # Python
 __pycache__/
