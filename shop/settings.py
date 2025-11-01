@@ -169,8 +169,20 @@ if os.getenv('DEBUG', 'True') == 'False':
     DEBUG = False
     
     # Security settings for production
-    CSRF_COOKIE_SECURE = False
-    SESSION_COOKIE_SECURE = False
-    
+            
     # Static files for production
     STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+# CSRF settings
+CSRF_TRUSTED_ORIGINS = [
+    "http://46.17.102.12:8000",
+    "https://46.17.102.12:8000", 
+    "http://46.17.102.12",
+    "https://46.17.102.12",
+]
+CSRF_COOKIE_SECURE = False
+SESSION_COOKIE_SECURE = False
+CSRF_COOKIE_HTTPONLY = False
+
+# Proxy settings for nginx
+USE_X_FORWARDED_HOST = True
+SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'http')
